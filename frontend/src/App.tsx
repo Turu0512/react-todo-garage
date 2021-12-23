@@ -5,11 +5,11 @@ import { Incomplete } from "./components/Incomplete";
 import { Complete } from "./components/Complete";
 
 export const App = () => {
-  const [todoText, setTodoText] = useState("");
-  const [incompleteTodos, setIncompleteTodos] = useState([]);
-  const [completeTodos, setCompleteTodos] = useState([]);
+  const [todoText, setTodoText] = useState<string>("");
+  const [incompleteTodos, setIncompleteTodos] = useState<string[]>([]);
+  const [completeTodos, setCompleteTodos] = useState<string[]>([]);
 
-  const onChangeTodoText = (e) => {
+  const onChangeTodoText = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTodoText(e.target.value);
   };
 
@@ -19,13 +19,13 @@ export const App = () => {
     setTodoText("");
   };
 
-  const onClickDelete = (i) => {
+  const onClickDelete = (i: number) => {
     const newTodos = [...incompleteTodos];
     newTodos.splice(i, 1);
     setIncompleteTodos(newTodos);
   };
 
-  const onClickComplete = (i) => {
+  const onClickComplete = (i: number) => {
     const newIncompleteTodos = [...incompleteTodos];
     newIncompleteTodos.splice(i, 1);
 
@@ -34,7 +34,7 @@ export const App = () => {
     setCompleteTodos(newCompleteTodos);
   };
 
-  const onClickBack = (i) => {
+  const onClickBack = (i: number) => {
     const newCompleteTodos = [...completeTodos];
     newCompleteTodos.splice(i, 1);
 

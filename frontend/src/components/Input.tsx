@@ -1,6 +1,12 @@
 import React from "react";
 
-export const Input = (props) => {
+type Props = {
+  todoText: string;
+  onChangeTodoText: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onClickAdd: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+};
+
+export const Input: React.VFC<Props> = (props) => {
   const { todoText, onChangeTodoText, onClickAdd } = props;
   return (
     <div className="input-area">
