@@ -3,6 +3,7 @@ import "./styles.css";
 import { Input } from "./components/Input";
 import { Incomplete } from "./components/Incomplete";
 import { Complete } from "./components/Complete";
+import axios from "axios";
 
 export const App = () => {
   const [todoText, setTodoText] = useState<string>("");
@@ -13,9 +14,17 @@ export const App = () => {
     setTodoText(e.target.value);
   };
 
-  const onClickAdd = () => {
+  const onClickAdd = async () => {
     if (todoText === "") return;
     setIncompleteTodos([...incompleteTodos, todoText]);
+    const jsonTodoText = {
+      todo_title: todoText,
+    };
+    console.log(jsonTodoText);
+    await axios.post("http://127.0.0.1:8000/todo", jsonTodoText).then((res) => {
+      console.log(res);
+      console.log(res.data);
+    });
     setTodoText("");
   };
 
