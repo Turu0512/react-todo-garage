@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./styles.css";
 import { Input } from "./components/Input";
 import { Incomplete } from "./components/Incomplete";
@@ -13,6 +13,14 @@ export const App = () => {
   const onChangeTodoText = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTodoText(e.target.value);
   };
+
+  useEffect(() => {
+    axios.get("http://127.0.0.1:8000/todo").then((res) => {
+      console.log([...res.data]);
+      // setIncompleteTodos([...res.data]);
+    });
+    console.log("useEffectが実行されました");
+  }, []);
 
   const onClickAdd = async () => {
     if (todoText === "") return;
@@ -52,6 +60,7 @@ export const App = () => {
     setCompleteTodos(newCompleteTodos);
     setIncompleteTodos(newIncompleteTodos);
   };
+
   return (
     <>
       <Input
