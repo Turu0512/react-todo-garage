@@ -36,7 +36,7 @@ app.add_middleware(
 )
 
 @app.get('/todo', response_model=List[schemas.Todo])
-async def read_toto(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+async def read_todo(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     todos = crud.get_todos(db, skip=skip, limit=limit)
     return todos
 
@@ -44,3 +44,9 @@ async def read_toto(skip: int = 0, limit: int = 100, db: Session = Depends(get_d
 async def create_todo(todo: schemas.CreateTodo, db: Session = Depends(get_db)):
 	return crud.create_todo(todo=todo, db=db)
 
+@app.delete("/todo/{todo_id}")
+async def delete_todo(todo_id: int, db: Session = Depends(get_db)):
+    # crud.delete_todo(todo_id, db)
+    todo = db.query(models.Todo).filter(models.Todo.todo_id == todo_id).first()
+    db.delete(todo)
+    db.commit()

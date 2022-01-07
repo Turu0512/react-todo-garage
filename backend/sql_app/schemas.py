@@ -9,3 +9,5 @@ class CreateTodo(BaseModel):
 class Todo(CreateTodo):
     todo_id: int
 
+class DeleteTodo(BaseModel):
+    todo_id: int
