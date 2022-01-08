@@ -24,9 +24,20 @@ export const App = () => {
     });
   };
 
+  const compleatTodoData = async () => {
+    const todos = await axios
+      .get("http://127.0.0.1:8000/compleat_todo")
+      .then((res) => {
+        console.log([...res.data]);
+        const todo = [...res.data];
+        setCompleteTodos(todo);
+      });
+  };
+
   useEffect(() => {
     console.log("useEffectが実行されました");
     todoData();
+    compleatTodoData();
   }, []);
 
   const onClickAdd = async () => {
@@ -56,7 +67,6 @@ export const App = () => {
     // const newTodos = [...incompleteTodos];
     // newTodos.splice(i, 1);
     // setIncompleteTodos(newTodos);
-    console.log(id);
     await axios
       .delete("http://127.0.0.1:8000/todo/" + id)
       .then((res) => {

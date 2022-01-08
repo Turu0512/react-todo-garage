@@ -40,9 +40,18 @@ async def read_todo(skip: int = 0, limit: int = 100, db: Session = Depends(get_d
     todos = crud.get_todos(db, skip=skip, limit=limit)
     return todos
 
+@app.get('/compleat_todo', response_model=List[schemas.Todo])
+async def read_todo(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    compleat_todos = crud.get_compleat_todos(db, skip=skip, limit=limit)
+    return compleat_todos
+
 @app.post('/todo', response_model= schemas.CreateTodo)
 async def create_todo(todo: schemas.CreateTodo, db: Session = Depends(get_db)):
 	return crud.create_todo(todo=todo, db=db)
+
+@app.post('/compleat_todo', response_model= schemas.CreateTodo)
+async def compleat_todo(todo: schemas.CreateTodo, db: Session = Depends(get_db)):
+	return crud.compleat_todo(todo=todo, db=db)
 
 @app.delete("/todo/{todo_id}")
 async def delete_todo(todo_id: int, db: Session = Depends(get_db)):
