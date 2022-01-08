@@ -18,7 +18,7 @@ export const Incomplete: React.VFC<Props> = (props) => {
             <li key={todo.todo_id}>
               <div className="list-row">
                 <p>{todo.todo_title}</p>
-                <button onClick={() => onClickComplete(index)}>完了</button>
+                <button onClick={() => onClickComplete(todo)}>完了</button>
                 <button onClick={() => onClickDelete(todo.todo_id)}>
                   削除
                 </button>

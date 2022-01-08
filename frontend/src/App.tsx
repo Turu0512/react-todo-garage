@@ -17,7 +17,7 @@ export const App = () => {
   };
 
   const todoData = async () => {
-    const todos = await axios.get("http://127.0.0.1:8000/todo").then((res) => {
+    const todos = await axios.get("http://127.0.0.1:8000/todos").then((res) => {
       console.log([...res.data]);
       const todo = [...res.data];
       setIncompleteTodos(todo);
@@ -72,6 +72,7 @@ export const App = () => {
       .then((res) => {
         console.log(res);
         console.log(res.data);
+        todoData();
       })
       .catch((error) => {
         console.log(error.config);
@@ -80,16 +81,27 @@ export const App = () => {
         console.log(error.isAxiosError);
         console.log(error.toJSON);
       });
-    todoData();
   };
 
-  const onClickComplete = (i: number) => {
-    const newIncompleteTodos = [...incompleteTodos];
-    newIncompleteTodos.splice(i, 1);
-
-    const newCompleteTodos = [...completeTodos, incompleteTodos[i]];
-    setIncompleteTodos(newIncompleteTodos);
-    setCompleteTodos(newCompleteTodos);
+  const onClickComplete = async (todo: any) => {
+    await axios
+      .post("http://127.0.0.1:8000/compleat_todo", {
+        todo_title: todo.todo_title,
+      })
+      .then((res) => {
+        console.log(res);
+        console.log(res.data);
+      })
+      .catch((error) => {
+        console.log(error.config);
+        console.log(error.request);
+        console.log(error.response);
+        console.log(error.isAxiosError);
+        console.log(error.toJSON);
+      });
+    onClickDelete(todo.todo_id);
+    compleatTodoData();
+    // console.log(todo);
   };
 
   const onClickBack = (i: number) => {

@@ -35,10 +35,16 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.get('/todo', response_model=List[schemas.Todo])
+@app.get('/todos', response_model=List[schemas.Todo])
 async def read_todo(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     todos = crud.get_todos(db, skip=skip, limit=limit)
     return todos
+
+@app.get('/todo/{todo_id}', response_model=List[schemas.Todo])
+async def read_todo(todo_id: int, db: Session = Depends(get_db)):
+    # todo = crud.get_todo(todo_id, db)
+    todo = db.query(models.Todo).filter(models.Todo.todo_id == todo_id).first()
+    return todo
 
 @app.get('/compleat_todo', response_model=List[schemas.Todo])
 async def read_todo(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):

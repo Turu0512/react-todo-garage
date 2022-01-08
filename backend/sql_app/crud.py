@@ -2,8 +2,8 @@ from sqlalchemy.orm import Session
 from . import models, schemas
 
 
-# def get_todo(db: Session, todo_id):
-#     return db.query(models.Todo).filter(models.Todo.todo_id == todo_id).first()
+def get_todo(db: Session, todo_id):
+    return db.query(models.Todo).filter(models.Todo.todo_id == todo_id).first()
 
 # TODO一覧を取得する
 def get_todos(db:Session, skip: int = 0, limit: int =100):
