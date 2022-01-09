@@ -40,12 +40,6 @@ async def read_todo(skip: int = 0, limit: int = 100, db: Session = Depends(get_d
     todos = crud.get_todos(db, skip=skip, limit=limit)
     return todos
 
-@app.get('/todo/{todo_id}', response_model=List[schemas.Todo])
-async def read_todo(todo_id: int, db: Session = Depends(get_db)):
-    # todo = crud.get_todo(todo_id, db)
-    todo = db.query(models.Todo).filter(models.Todo.todo_id == todo_id).first()
-    return todo
-
 @app.get('/compleat_todo', response_model=List[schemas.Todo])
 async def read_todo(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     compleat_todos = crud.get_compleat_todos(db, skip=skip, limit=limit)
@@ -63,5 +57,12 @@ async def compleat_todo(todo: schemas.CreateTodo, db: Session = Depends(get_db))
 async def delete_todo(todo_id: int, db: Session = Depends(get_db)):
     # crud.delete_todo(todo_id, db)
     todo = db.query(models.Todo).filter(models.Todo.todo_id == todo_id).first()
+    db.delete(todo)
+    db.commit()
+
+@app.delete("/compleat_todo/{todo_id}")
+async def delete_todo(todo_id: int, db: Session = Depends(get_db)):
+    # crud.delete_todo(todo_id, db)
+    todo = db.query(models.CompleatTodo).filter(models.CompleatTodo.todo_id == todo_id).first()
     db.delete(todo)
     db.commit()
