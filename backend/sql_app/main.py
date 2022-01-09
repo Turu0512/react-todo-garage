@@ -35,12 +35,33 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.get('/todo', response_model=List[schemas.Todo])
-async def read_toto(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+@app.get('/todos', response_model=List[schemas.Todo])
+async def read_todo(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     todos = crud.get_todos(db, skip=skip, limit=limit)
     return todos
+
+@app.get('/todo/{todo_id}', response_model=List[schemas.Todo])
+async def read_todo(todo_id: int, db: Session = Depends(get_db)):
+    # todo = crud.get_todo(todo_id, db)
+    todo = db.query(models.Todo).filter(models.Todo.todo_id == todo_id).first()
+    return todo
+
+@app.get('/compleat_todo', response_model=List[schemas.Todo])
+async def read_todo(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    compleat_todos = crud.get_compleat_todos(db, skip=skip, limit=limit)
+    return compleat_todos
 
 @app.post('/todo', response_model= schemas.CreateTodo)
 async def create_todo(todo: schemas.CreateTodo, db: Session = Depends(get_db)):
 	return crud.create_todo(todo=todo, db=db)
 
+@app.post('/compleat_todo', response_model= schemas.CreateTodo)
+async def compleat_todo(todo: schemas.CreateTodo, db: Session = Depends(get_db)):
+	return crud.compleat_todo(todo=todo, db=db)
+
+@app.delete("/todo/{todo_id}")
+async def delete_todo(todo_id: int, db: Session = Depends(get_db)):
+    # crud.delete_todo(todo_id, db)
+    todo = db.query(models.Todo).filter(models.Todo.todo_id == todo_id).first()
+    db.delete(todo)
+    db.commit()

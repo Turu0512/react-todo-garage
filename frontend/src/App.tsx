@@ -6,6 +6,8 @@ import { Complete } from "./components/Complete";
 import axios from "axios";
 
 export const App = () => {
+  type Todo = [{ todo_title: string; todo_id: number }];
+
   const [todoText, setTodoText] = useState<string>("");
   const [incompleteTodos, setIncompleteTodos] = useState<string[]>([]);
   const [completeTodos, setCompleteTodos] = useState<string[]>([]);
@@ -14,41 +16,92 @@ export const App = () => {
     setTodoText(e.target.value);
   };
 
-  useEffect(() => {
-    axios.get("http://127.0.0.1:8000/todo").then((res) => {
+  const todoData = async () => {
+    const todos = await axios.get("http://127.0.0.1:8000/todos").then((res) => {
       console.log([...res.data]);
-      // setIncompleteTodos([...res.data]);
+      const todo = [...res.data];
+      setIncompleteTodos(todo);
     });
+  };
+
+  const compleatTodoData = async () => {
+    const todos = await axios
+      .get("http://127.0.0.1:8000/compleat_todo")
+      .then((res) => {
+        console.log([...res.data]);
+        const todo = [...res.data];
+        setCompleteTodos(todo);
+      });
+  };
+
+  useEffect(() => {
     console.log("useEffectが実行されました");
+    todoData();
+    compleatTodoData();
   }, []);
 
   const onClickAdd = async () => {
     if (todoText === "") return;
-    setIncompleteTodos([...incompleteTodos, todoText]);
     const jsonTodoText = {
       todo_title: todoText,
     };
     console.log(jsonTodoText);
-    await axios.post("http://127.0.0.1:8000/todo", jsonTodoText).then((res) => {
-      console.log(res);
-      console.log(res.data);
-    });
+    await axios
+      .post("http://127.0.0.1:8000/todo", jsonTodoText)
+      .then((res) => {
+        console.log(res);
+        console.log(res.data);
+      })
+      .catch((error) => {
+        console.log(error.config);
+        console.log(error.request);
+        console.log(error.response);
+        console.log(error.isAxiosError);
+        console.log(error.toJSON);
+      });
+    todoData();
     setTodoText("");
   };
 
-  const onClickDelete = (i: number) => {
-    const newTodos = [...incompleteTodos];
-    newTodos.splice(i, 1);
-    setIncompleteTodos(newTodos);
+  const onClickDelete = async (id: number) => {
+    // const newTodos = [...incompleteTodos];
+    // newTodos.splice(i, 1);
+    // setIncompleteTodos(newTodos);
+    await axios
+      .delete("http://127.0.0.1:8000/todo/" + id)
+      .then((res) => {
+        console.log(res);
+        console.log(res.data);
+        todoData();
+      })
+      .catch((error) => {
+        console.log(error.config);
+        console.log(error.request);
+        console.log(error.response);
+        console.log(error.isAxiosError);
+        console.log(error.toJSON);
+      });
   };
 
-  const onClickComplete = (i: number) => {
-    const newIncompleteTodos = [...incompleteTodos];
-    newIncompleteTodos.splice(i, 1);
-
-    const newCompleteTodos = [...completeTodos, incompleteTodos[i]];
-    setIncompleteTodos(newIncompleteTodos);
-    setCompleteTodos(newCompleteTodos);
+  const onClickComplete = async (todo: any) => {
+    await axios
+      .post("http://127.0.0.1:8000/compleat_todo", {
+        todo_title: todo.todo_title,
+      })
+      .then((res) => {
+        console.log(res);
+        console.log(res.data);
+      })
+      .catch((error) => {
+        console.log(error.config);
+        console.log(error.request);
+        console.log(error.response);
+        console.log(error.isAxiosError);
+        console.log(error.toJSON);
+      });
+    onClickDelete(todo.todo_id);
+    compleatTodoData();
+    // console.log(todo);
   };
 
   const onClickBack = (i: number) => {

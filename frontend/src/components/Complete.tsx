@@ -1,7 +1,7 @@
 import React from "react";
 
 type Props = {
-  todo: string[];
+  todo: any[];
   onClickBack: Function;
 };
 
@@ -13,9 +13,9 @@ export const Complete: React.VFC<Props> = (props) => {
       <ul>
         {todo.map((todo, index: number) => {
           return (
-            <li key={todo}>
+            <li key={todo.todo_id}>
               <div className="list-row">
-                <p>{todo}</p>
+                <p>{todo.todo_title}</p>
                 <button onClick={() => onClickBack(index)}>戻す</button>
               </div>
             </li>
