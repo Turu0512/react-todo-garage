@@ -16,7 +16,7 @@ export const Complete: React.VFC<Props> = (props) => {
             <li key={todo.todo_id}>
               <div className="list-row">
                 <p>{todo.todo_title}</p>
-                <button onClick={() => onClickBack(index)}>戻す</button>
+                <button onClick={() => onClickBack(todo)}>戻す</button>
               </div>
             </li>
           );
