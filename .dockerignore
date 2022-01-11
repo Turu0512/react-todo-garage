@@ -1,0 +1,5 @@
+docker-compose.yaml
+Dockerfile
+sql_app.db
+.gitignore
+.dockerignore
