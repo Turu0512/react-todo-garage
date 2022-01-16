@@ -4,13 +4,12 @@ import { Input } from "./components/Input";
 import { Incomplete } from "./components/Incomplete";
 import { Complete } from "./components/Complete";
 import axios from "axios";
+import { Todo } from "./components/Todotype";
 
 export const App = () => {
-  type Todo = [{ todo_title: string; todo_id: number }];
-
   const [todoText, setTodoText] = useState<string>("");
-  const [incompleteTodos, setIncompleteTodos] = useState<string[]>([]);
-  const [completeTodos, setCompleteTodos] = useState<string[]>([]);
+  const [incompleteTodos, setIncompleteTodos] = useState<Todo[]>([]);
+  const [completeTodos, setCompleteTodos] = useState<Todo[]>([]);
 
   const onChangeTodoText = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTodoText(e.target.value);
@@ -83,7 +82,7 @@ export const App = () => {
       });
   };
 
-  const onClickComplete = async (todo: any) => {
+  const onClickComplete = async (todo: Todo) => {
     await axios
       .post("http://127.0.0.1:8000/compleat_todo", {
         todo_title: todo.todo_title,
@@ -104,7 +103,7 @@ export const App = () => {
     // console.log(todo);
   };
 
-  const onClickBack = async (todo: any) => {
+  const onClickBack = async (todo: Todo) => {
     await axios
       .delete("http://127.0.0.1:8000/compleat_todo/" + todo.todo_id)
       .then((res) => {

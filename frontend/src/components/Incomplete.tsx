@@ -1,8 +1,8 @@
 import React from "react";
+import { Todo } from "./Todotype";
 
 type Props = {
-  // todo: [{ todo_title: string; todo_id: number }];
-  todo: any[];
+  todo: Todo[];
   onClickComplete: Function;
   onClickDelete: Function;
 };
@@ -13,7 +13,7 @@ export const Incomplete: React.VFC<Props> = (props) => {
     <div className="incomplete-area">
       <p className="title">未完了のTODO</p>
       <ul>
-        {todo.map((todo, index: number) => {
+        {todo.map((todo) => {
           return (
             <li key={todo.todo_id}>
               <div className="list-row">

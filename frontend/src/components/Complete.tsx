@@ -1,7 +1,8 @@
 import React from "react";
+import { Todo } from "./Todotype";
 
 type Props = {
-  todo: any[];
+  todo: Todo[];
   onClickBack: Function;
 };
 
