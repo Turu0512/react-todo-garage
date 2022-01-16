@@ -18,7 +18,7 @@ def create_todo(db: Session, todo: schemas.CreateTodo):
     db_todo = models.Todo(todo_title= todo.todo_title)
     db.add(db_todo)
     db.commit()
-    db.refresh()
+    db.refresh(db,todo)
     return db_todo
 
 # compleat_todoの移動
@@ -26,7 +26,7 @@ def compleat_todo(db: Session, todo: schemas.CreateTodo):
     db_compleat_todo = models.CompleatTodo(todo_title= todo.todo_title)
     db.add(db_compleat_todo)
     db.commit()
-    db.refresh()
+    db.refresh(db,todo)
     return db_compleat_todo
 
 # TODOの削除

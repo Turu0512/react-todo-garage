@@ -17,7 +17,7 @@ export const App = () => {
   };
 
   const todoData = async () => {
-    const todos = await axios.get("http://127.0.0.1:8000/todos").then((res) => {
+    await axios.get("http://127.0.0.1:8000/todos").then((res) => {
       // console.log([...res.data]);
       const todo = [...res.data];
       setIncompleteTodos(todo);
